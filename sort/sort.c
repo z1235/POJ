@@ -133,7 +133,7 @@ void mergeSortBU(int *arr, int n)
 
 int main()
 {
-    int n = 100;
+    int n = 1000000;
 
     int *arr0 = generateRandom(n, 0, n);
     int *arr1 = generateOrder(n, 10);
@@ -150,8 +150,9 @@ int main()
     // testSortFunction_2("insertSort_2", insertSort_2, arr0, 0, n - 1);
     // testSortFunction("mergeSort", mergeSort, arr0, n);
     // testSortFunction("mergeSortBU", mergeSortBU, arr0, n);
-    // testSortFunction("shellSort", shellSort, arr0, n);
-    testSortFunction("quickSort", quickSort, arr0, n);
+    testSortFunction("shellSort", shellSort, arr0, n);
+    // testSortFunction("quickSort", quickSort, arr2, n);
+    // testSortFunction("quickSort_rand", quickSort_rand, arr2, n);
 
     free(arr0);
     free(arr1);
