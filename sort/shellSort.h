@@ -12,6 +12,7 @@ void shellInsert(int *arr, int n, int d)
             arr[j] = arr[j - d];
         arr[j] = e;
     }
+
 }
 
 void shellSort(int *arr, int n)

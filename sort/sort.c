@@ -3,6 +3,7 @@
 
 #include "sortHelper.h"
 #include "shellSort.h"
+#include "quickSort.h"
 
 void selectSort(int *arr, int n)
 {
@@ -148,8 +149,9 @@ int main()
     // testSortFunction("mergeSort", mergeSort, arr0, n);
     // testSortFunction_2("insertSort_2", insertSort_2, arr0, 0, n - 1);
     // testSortFunction("mergeSort", mergeSort, arr0, n);
-    testSortFunction("mergeSortBU", mergeSortBU, arr0, n);
-    testSortFunction("shellSort", shellSort, arr0, n);
+    // testSortFunction("mergeSortBU", mergeSortBU, arr0, n);
+    // testSortFunction("shellSort", shellSort, arr0, n);
+    testSortFunction("quickSort", quickSort, arr0, n);
 
     free(arr0);
     free(arr1);
