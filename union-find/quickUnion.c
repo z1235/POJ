@@ -73,7 +73,7 @@ int main()
 {
     QuickUnion qu;
     int n = 100;
-    int testSize = 10000;
+    int testSize = 1000000;
     initQuickUnion(&qu, n);
     testUnionFind(&qu, testSize);
     deleteQuickUnion(&qu);

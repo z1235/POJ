@@ -76,13 +76,13 @@ void testUnionFind(Union *u, int n)
     srand(time(NULL));
     t1 = clock();
     for (i = 0; i < n; ++i) {
-        a = (u->id)[rand() % (u->cnt)];
-        b = (u->id)[rand() % (u->cnt)];
+        a = rand() % u->cnt;
+        b = rand() % u->cnt;
         unionElements(u, a, b);
     }
     for (i = 0; i < n; ++i) {
-        a = (u->id)[rand() % (u->cnt)];
-        b = (u->id)[rand() % (u->cnt)];
+        a = rand() % u->cnt;
+        b = rand() % u->cnt;
         isConnected(u, a, b);
     }
     t2 = clock();
