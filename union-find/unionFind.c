@@ -35,15 +35,15 @@ int isConnected(Union *u, int p, int q)
 // 将两个元素划到同一个 union中去
 void unionElements(Union *u, int p, int q)
 {
-    int idP = find(u, p);
-    int idQ = find(u, q);
     int i;
-    if (idP == idQ)
+    int pID = find(u, p);
+    int qID = find(u, q);
+    if (pID == qID)
         return;
+
     for (i = 0; i < u->cnt; ++i) {
-        if (find(u, i) == idP) {
-            (u->id)[i] = idQ;
-        }
+        if ((u->id)[i] == pID)
+            (u->id)[i] = qID;
     }
 }
 
@@ -93,7 +93,8 @@ int main()
 {
     Union u;
     int n = 100;
-    int testSize = 100000;
+    int testSize = 1000000;
+
     initUnion(&u, n);
     testUnionFind(&u, testSize);
     deleteUnion(&u);
