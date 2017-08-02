@@ -93,7 +93,7 @@ int main()
 {
     Union u;
     int n = 100;
-    int testSize = 1000000;
+    int testSize = 10000000;
 
     initUnion(&u, n);
     testUnionFind(&u, testSize);

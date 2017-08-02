@@ -85,7 +85,7 @@ int main()
 {
     UnionFind uf;
     int n = 100;
-    int testSize = 1000000;
+    int testSize = 10000000;
     initUnionFind(&uf, n);
     testUnionFind(&uf, testSize);
     deleteUnionFind(&uf);
