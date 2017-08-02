@@ -10,6 +10,10 @@ typedef struct {
     int **map;      // 指向邻接矩阵
 } DenseGraph;
 
+int *visited = NULL;
+int *id = NULL;
+int ccnt = 0;
+
 void initDenseGraph(DenseGraph * dg, int n, int directed)
 {
     int i, j;
@@ -58,14 +62,22 @@ void printTable(DenseGraph *dg)
 // 释放稠密图的堆空间
 void deleteDenseGraph(DenseGraph *dg)
 {
-    int i, j;
+    int i;
     int n = dg->n;
     for (i = 0; i < n; ++i) {
         free((dg->map)[i]);
+        (dg->map)[i] = NULL;
     }
     free(dg->map);
-    dg->e = 0;
-    dg->n = 0;
+    dg->map = NULL;
+    if (visited) {
+        free(visited);
+        visited = NULL;
+    }
+    if (id) {
+        free(id);
+        id = NULL;
+    }
 }
 
 // 插入一条边
@@ -95,50 +107,58 @@ void addEdgeFromFile(DenseGraph *dg, char *fileName)
 // 根据文件中数据初始化一个图
 
 // 求一个图的连通分量
-void dfs(DenseGraph *sg, int *visited, int v)
+void dfs(DenseGraph *sg, int v)
 {
     int n = sg->n;
     int i;
     visited[v] = 1;
+    id[v] = ccnt;
+
     // 遍历邻居节点
     for (i = 0; i < n; ++i) {
         if ((sg->map)[v][i] && !visited[i]) { // 邻接边, 没有被访问
-            dfs(sg, visited, i);
+            dfs(sg, i);
         }
     } // end-for
 }
 
 
-int getComponent(DenseGraph *sg)
+void getComponent(DenseGraph *sg)
 {
     int n = sg->n;
-    int *visited = (int *)malloc(sizeof(int) * n);
-    int cnt = 0;
     int i;
-    for (i = 0; i < n; ++i)
+    ccnt = 0; // ccnt中保留的是连通分量的个数
+    visited = (int *)malloc(sizeof(int) * n);
+    id = (int *)malloc(sizeof(int) * n);
+    for (i = 0; i < n; ++i) {
         visited[i] = 0;
+        id[i] = -1;
+    }
     for (i = 0; i < n; ++i) {
         if (!visited[i]) {
             dfs(sg, visited, i);
-            cnt++;
+            ccnt++; //
         }
     } // end-for
-
-    free(visited);
-    return cnt;
 }
+
+// 判断两个节点是否在同一个连通分量中,在此之前需要执行 getComponent
+void isConnected(DenseGraph *sg, int u, int v)
+{
+    return id(u) == id(v);
+}
+
 
 int main()
 {
     DenseGraph dg;
     int n = 10;
     int directed = 0;
-    int ccnt;
     initDenseGraph(&dg, 10, 0);
     addEdgeFromFile(&dg, "map.tb");
     printTable(&dg);
     printMatric(&dg);
-    ccnt = getComponent(&dg);
+    getComponent(&dg);
     printf("total component: %d\n", ccnt);
     deleteDenseGraph(&dg);
     return 0;
