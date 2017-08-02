@@ -79,6 +79,7 @@ void insertEdge(DenseGraph *dg, int u, int v)
         (dg->map)[v][u] = 1;
 }
 
+// 从文件中插入边
 void addEdgeFromFile(DenseGraph *dg, char *fileName)
 {
     int u, v;
@@ -91,15 +92,54 @@ void addEdgeFromFile(DenseGraph *dg, char *fileName)
     fclose(fp);
 }
 
+// 根据文件中数据初始化一个图
+
+// 求一个图的连通分量
+void dfs(DenseGraph *sg, int *visited, int v)
+{
+    int n = sg->n;
+    int i;
+    visited[v] = 1;
+    // 遍历邻居节点
+    for (i = 0; i < n; ++i) {
+        if ((sg->map)[v][i] && !visited[i]) { // 邻接边, 没有被访问
+            dfs(sg, visited, i);
+        }
+    } // end-for
+}
+
+
+int getComponent(DenseGraph *sg)
+{
+    int n = sg->n;
+    int *visited = (int *)malloc(sizeof(int) * n);
+    int cnt = 0;
+    int i;
+    for (i = 0; i < n; ++i)
+        visited[i] = 0;
+    for (i = 0; i < n; ++i) {
+        if (!visited[i]) {
+            dfs(sg, visited, i);
+            cnt++;
+        }
+    } // end-for
+
+    free(visited);
+    return cnt;
+}
+
 int main()
 {
     DenseGraph dg;
     int n = 10;
     int directed = 0;
+    int ccnt;
     initDenseGraph(&dg, 10, 0);
     addEdgeFromFile(&dg, "map.tb");
     printTable(&dg);
     printMatric(&dg);
+    ccnt = getComponent(&dg);
+    printf("total component: %d\n", ccnt);
     deleteDenseGraph(&dg);
     return 0;
 }
