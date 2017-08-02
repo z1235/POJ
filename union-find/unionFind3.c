@@ -29,6 +29,16 @@ int find(UnionFind *uf, int i)
     return i;
 }
 
+int find2(UnionFind *uf, int i)
+{
+    assert(i < uf->size && i >= 0);
+    while (i != (uf->parent)[i]) {
+        (uf->parent)[i] = (uf->parent)[(uf->parent)[i]];
+        i = (uf->parent)[i];
+    }
+    return i;
+}
+
 void unionElements(UnionFind *uf, int p, int q)
 {
     int pID = find(uf, p);
