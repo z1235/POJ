@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 typedef struct {
     int n;          // 节点的数目
@@ -107,25 +108,25 @@ void addEdgeFromFile(DenseGraph *dg, char *fileName)
 // 根据文件中数据初始化一个图
 
 // 求一个图的连通分量
-void dfs(DenseGraph *sg, int v)
+void dfs(DenseGraph *dg, int v)
 {
-    int n = sg->n;
+    int n = dg->n;
     int i;
     visited[v] = 1;
     id[v] = ccnt;
 
     // 遍历邻居节点
     for (i = 0; i < n; ++i) {
-        if ((sg->map)[v][i] && !visited[i]) { // 邻接边, 没有被访问
-            dfs(sg, i);
+        if ((dg->map)[v][i] && !visited[i]) { // 邻接边, 没有被访问
+            dfs(dg, i);
         }
     } // end-for
 }
 
 
-void getComponent(DenseGraph *sg)
+void getComponent(DenseGraph *dg)
 {
-    int n = sg->n;
+    int n = dg->n;
     int i;
     ccnt = 0; // ccnt中保留的是连通分量的个数
     visited = (int *)malloc(sizeof(int) * n);
@@ -136,16 +137,32 @@ void getComponent(DenseGraph *sg)
     }
     for (i = 0; i < n; ++i) {
         if (!visited[i]) {
-            dfs(sg, visited, i);
+            dfs(dg, i);
             ccnt++; //
         }
     } // end-for
 }
 
 // 判断两个节点是否在同一个连通分量中,在此之前需要执行 getComponent
-void isConnected(DenseGraph *sg, int u, int v)
+int isConnected(DenseGraph *dg, int u, int v)
 {
-    return id(u) == id(v);
+    int n = dg->n;
+    assert(u >= 0 && u < n);
+    assert(v >= 0 && v < n);
+    return id[u] == id[v];
+}
+
+void testConnected(DenseGraph *dg, int n, int testSize)
+{
+    int i;
+    int u, v;
+    srand(time(NULL));
+
+    for (i = 0; i < testSize; ++i) {
+        u = rand() % n;
+        v = rand() % n;
+        printf("%d %d %sconnected\n", u, v, isConnected(dg, u, v) ? "is" : "un");
+    }
 }
 
 
@@ -154,12 +171,14 @@ int main()
     DenseGraph dg;
     int n = 10;
     int directed = 0;
-    initDenseGraph(&dg, 10, 0);
+    int testSize = 10;
+    initDenseGraph(&dg, n, directed);
     addEdgeFromFile(&dg, "map.tb");
     printTable(&dg);
     printMatric(&dg);
     getComponent(&dg);
     printf("total component: %d\n", ccnt);
+    testConnected(&dg, n, testSize);
     deleteDenseGraph(&dg);
     return 0;
 }
