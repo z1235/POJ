@@ -28,7 +28,8 @@ void initDenseGraph(DenseGraph * dg, int n, int directed)
     } // end-for
 }
 
-void printDenseGraph(DenseGraph *dg)
+// 将邻接矩阵打印出来
+void printMatric(DenseGraph *dg)
 {
     int i, j;
     int n = dg->n;
@@ -36,6 +37,20 @@ void printDenseGraph(DenseGraph *dg)
         for (j = 0; j < n; ++j) {
             printf("%d ", (dg->map)[i][j]);
         } // end-for
+        putchar('\n');
+    } // end-for
+}
+
+// 将邻接表打印出来
+void printTable(DenseGraph *dg)
+{
+    int i, j;
+    int n = dg->n;
+    for (i = 0; i < n; ++i) {
+        printf("vertrix %d: ", i);
+        for (j = 0; j < n; ++j)
+            if ((dg->map)[i][j] != 0)
+                printf("%d ", j);
         putchar('\n');
     } // end-for
 }
@@ -64,6 +79,17 @@ void insertEdge(DenseGraph *dg, int u, int v)
         (dg->map)[v][u] = 1;
 }
 
+void addEdgeFromFile(DenseGraph *dg, char *fileName)
+{
+    int u, v;
+    FILE *fp = NULL;
+    fp = fopen(fileName, "r+");
+    assert(fp);
+
+    while (fscanf(fp, "%d %d", &u, &v) == 2)
+        insertEdge(dg, u, v);
+    fclose(fp);
+}
 
 int main()
 {
@@ -71,13 +97,9 @@ int main()
     int n = 10;
     int directed = 0;
     initDenseGraph(&dg, 10, 0);
-    insertEdge(&dg, 1, 2);
-    insertEdge(&dg, 1, 3);
-    insertEdge(&dg, 1, 4);
-    insertEdge(&dg, 2, 9);
-    insertEdge(&dg, 3, 2);
-
-    printDenseGraph(&dg);
+    addEdgeFromFile(&dg, "map.tb");
+    printTable(&dg);
+    printMatric(&dg);
     deleteDenseGraph(&dg);
     return 0;
 }

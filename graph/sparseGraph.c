@@ -73,6 +73,7 @@ void insertEdge(SparseGraph *sg, int u, int v)
 
 int main()
 {
+
     SparseGraph sg;
     int n = 10;
     int directed = 0;
