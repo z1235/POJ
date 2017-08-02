@@ -39,6 +39,23 @@ int find2(UnionFind *uf, int i)
     return i;
 }
 
+int find3(UnionFind *uf, int i)
+{
+    int b = i;
+    assert(i < uf->size && i >= 0);
+    while (i != (uf->parent)[i])
+        i = (uf->parent)[i];
+    (uf->parent)[b] = i;
+}
+
+// 返回并查集uf中元素 i 对应的根节点位置
+int findRecursion(UnionFind *uf, int i)
+{
+    if (i != (uf->parent)[i])
+        parent[i] = findRecursion(uf, i);
+    return parent[i];
+}
+
 void unionElements(UnionFind *uf, int p, int q)
 {
     int pID = find(uf, p);
@@ -80,6 +97,7 @@ void testUnionFind(UnionFind *uf, int testSize)
     t2 = clock();
     printf("used: %lf\n", (double)(t2 - t1)/CLOCKS_PER_SEC);
 }
+
 void deleteUnionFind(UnionFind * uf)
 {
     if (uf->parent) {
