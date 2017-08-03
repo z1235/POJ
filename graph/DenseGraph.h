@@ -60,7 +60,7 @@ void insertEdge(Graph *g, int u, int v)
         (g->map)[v][u] = 1;
 }
 
-Graph * buildGraphFromFile(char *fileName)
+Graph * buildGraphFromFile(const char *fileName)
 {
     int directed;
     int n;
